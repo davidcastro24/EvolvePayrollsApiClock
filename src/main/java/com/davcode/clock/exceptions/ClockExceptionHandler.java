@@ -19,7 +19,8 @@ public class ClockExceptionHandler {
     private HttpStatus getStatus(Exceptions exceptions){
         if (exceptions instanceof Exceptions.ClockNotFoundException
         || exceptions instanceof Exceptions.EmployeeNotFoundException
-        || exceptions instanceof Exceptions.UserNotFoundException){
+        || exceptions instanceof Exceptions.UserNotFoundException
+        || exceptions instanceof Exceptions.NoClocksException){
             return HttpStatus.NOT_FOUND;
         }else if(exceptions instanceof  Exceptions.InvalidDataException){
             return HttpStatus.BAD_REQUEST;

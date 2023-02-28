@@ -41,6 +41,10 @@ public class Exceptions extends RuntimeException{
         }
     }
 
-
+    public static class NoClocksException extends Exceptions{
+        public NoClocksException(String message) {
+            super(message);
+        }
+    }
 
 }

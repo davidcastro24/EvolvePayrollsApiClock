@@ -1,5 +1,6 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
@@ -41,21 +42,30 @@ public class ClockService {
     }
 
     public Clock getClock(Long id){
-        return clockRepository.findById(id).get();
+        Optional<Clock> clock = clockRepository.findById(id);
+        if (clock.isPresent()){
+            return clock.get();
+        }
+        throw new Exceptions.ClockNotFoundException("Clock not found");
     }
 
-    public List<Clock> getAll(){
-        return clockRepository.findAll();
+    public List<ClockResponse> getAll(){
+        List<Clock> clocks = clockRepository.findAll();
+        return clocks.stream().map(c -> DtoMapper.clockToDto(c)).collect(Collectors.toList());
     }
 
     public List<ClockResponse> getAllByUserId(Long userId){
         List<Clock> clocks = clockRepository.findClockByUserId(userId);
+        if (clocks.isEmpty())
+            throw new Exceptions.NoClocksException("No Clocks Inputted for this User");
         return clocks.stream().map(c -> DtoMapper.clockToDto(c)).collect(Collectors.toList());
     }
 
-    public Clock getCurrentClock(Long userId){
+    public ClockResponse getCurrentClock(Long userId){
         Optional<Clock> currentClock = Optional.of(clockRepository.findClockByActivity(LocalDate.now(),true, userId));
-        return currentClock.get();
+        if (currentClock.isPresent())
+            return DtoMapper.clockToDto(currentClock.get());
+        throw new Exceptions.ClockNotFoundException("No active clocks");
     }
 
     public void updateTimePeriod(Clock clock){
