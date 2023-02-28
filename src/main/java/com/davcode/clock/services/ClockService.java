@@ -51,6 +51,8 @@ public class ClockService {
 
     public List<ClockResponse> getAll(){
         List<Clock> clocks = clockRepository.findAll();
+        if (clocks.isEmpty())
+            throw new Exceptions.NoClocksException("No Clocks");
         return clocks.stream().map(c -> DtoMapper.clockToDto(c)).collect(Collectors.toList());
     }
 
