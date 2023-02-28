@@ -24,7 +24,7 @@ public interface ClockRepository extends JpaRepository<Clock,Long> {
     Clock findClockByActiveDate(LocalDate activeDate);
 
     //Necesitamos obtener los clocks de cierta fecha y company id
-    @Query("SELECT c.Clock, u.User FROM Clock,User JOIN Company cy ON" )
+    @Query("SELECT * FROM Clock c JOIN User U ON c.companyid=u.companyid" )
     Clock findClockByActiveDateAndCompany(@Param("active_date") LocalDate activeDate,
                                           @Param("company_id") Long CompanyId);
 }
