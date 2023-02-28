@@ -1,5 +1,7 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.mappers.dto.ClockResponse;
+import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
 import com.davcode.clock.repositories.ClockRepository;
 import jdk.vm.ci.meta.Local;
@@ -8,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClockService {
@@ -44,8 +48,9 @@ public class ClockService {
         return clockRepository.findAll();
     }
 
-    public List<Clock> getAllByUserId(Long userId){
-        return clockRepository.findClockByUserId(userId);
+    public List<ClockResponse> getAllByUserId(Long userId){
+        List<Clock> clocks = clockRepository.findClockByUserId(userId);
+        return clocks.stream().map(c -> DtoMapper.clockToDto(c)).collect(Collectors.toList());
     }
 
     public Clock getCurrentClock(Long userId){

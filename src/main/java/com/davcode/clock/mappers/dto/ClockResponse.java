@@ -6,12 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-public class ClockDto {
+public class ClockResponse {
     private Long clockId;
     private LocalDate activeDate;
     private LocalTime startTime;
     private LocalTime endTime;
-    private boolean activeFlag;
     private boolean underReview;
     private String userName;
 }

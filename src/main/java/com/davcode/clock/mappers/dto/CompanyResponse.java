@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.TimeZone;
 
 @Data
-public class CompanyDto {
+public class CompanyResponse {
     private Long id;
     private String companyName;
     private TimeZone timeZone;

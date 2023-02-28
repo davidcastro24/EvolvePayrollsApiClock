@@ -1,13 +1,16 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.mappers.dto.CompanyResponse;
+import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Company;
 import com.davcode.clock.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
@@ -19,8 +22,9 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public List<Company> getAll(){
-        return companyRepository.findAll();
+    public List<CompanyResponse> getAll(){
+         List<Company> companies = companyRepository.findAll();
+         return companies.stream().map(c -> DtoMapper.CompanyToDto(c)).collect(Collectors.toList());
     }
 
     public Company getById(Long id){

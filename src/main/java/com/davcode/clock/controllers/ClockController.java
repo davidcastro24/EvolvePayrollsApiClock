@@ -1,5 +1,7 @@
 package com.davcode.clock.controllers;
 
+import com.davcode.clock.mappers.dto.ClockResponse;
+import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
 import com.davcode.clock.services.ClockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +23,18 @@ public class ClockController {
     }
 
     @PostMapping(path = "/{userId}")
-    public ResponseEntity<String> addClock(@PathVariable Long userId){
-        try {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addClock(@PathVariable Long userId){
             clockService.addClock(userId);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect Data");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 
     @GetMapping(path = "/{clockId}")
-    public Clock getClock(@PathVariable Long clockId){
-        return clockService.getClock(clockId);
+    public ClockResponse getClock(@PathVariable Long clockId){
+        return DtoMapper.clockToDto(clockService.getClock(clockId));
     }
 
     @GetMapping(path = "/user/{userId}")
-    public List<Clock> getClocksByUser(@PathVariable Long userId){
+    public List<ClockResponse> getClocksByUser(@PathVariable Long userId){
         return clockService.getAllByUserId(userId);
     }
 

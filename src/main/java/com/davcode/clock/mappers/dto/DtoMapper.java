@@ -7,42 +7,42 @@ import com.davcode.clock.models.User;
 
 public class DtoMapper {
 
-    public static EmployeeDto employeeToDto(Employee employee){
-        EmployeeDto employeeDto = new EmployeeDto();
-        employeeDto.setId(employee.getEmployeeId());
-        employeeDto.setEmail(employee.getEmail());
-        employeeDto.setInternalId(employee.getInternalEmployeeId());
-        employeeDto.setName(employee.getFirstName() + " " + employee.getLastName());
+    public static EmployeeResponse employeeToDto(Employee employee){
+        EmployeeResponse employeeResponse = new EmployeeResponse();
+        employeeResponse.setId(employee.getEmployeeId());
+        employeeResponse.setEmail(employee.getEmail());
+        employeeResponse.setInternalId(employee.getInternalEmployeeId());
+        employeeResponse.setName(employee.getFirstName() + " " + employee.getLastName());
 
-        return employeeDto;
+        return employeeResponse;
     }
 
-    public static UserDto UserToDto(User user){
-        UserDto userDto = new UserDto();
-        userDto.setUserName(user.getUserName());
-        userDto.setId(user.getUserId());
-        userDto.setEmployeeId(user.getEmployee().getEmployeeId());
-        userDto.setRole(user.getRole());
-        return userDto;
+    public static UserResponse UserToDto(User user){
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserName(user.getUserName());
+        userResponse.setId(user.getUserId());
+        userResponse.setEmployeeId(user.getEmployee().getEmployeeId());
+        userResponse.setRole(user.getRole());
+        return userResponse;
     }
 
-    public static CompanyDto CompanyToDto(Company company){
-        CompanyDto companyDto = new CompanyDto();
-        companyDto.setCompanyName(company.getCompanyName());
-        companyDto.setId(company.getCompanyId());
-        companyDto.setTimeZone(company.getTimeZone());
-        return companyDto;
+    public static CompanyResponse CompanyToDto(Company company){
+        CompanyResponse companyResponse = new CompanyResponse();
+        companyResponse.setCompanyName(company.getCompanyName());
+        companyResponse.setId(company.getCompanyId());
+        companyResponse.setTimeZone(company.getTimeZone());
+        return companyResponse;
     }
 
-    public static ClockDto clockToDto(Clock clock){
-        ClockDto clockDto = new ClockDto();
-        clockDto.setClockId(clock.getClockId());
-        clockDto.setActiveDate(clock.getActiveDate());
-        clockDto.setActiveFlag(clock.isActiveFlag());
-        clockDto.setEndTime(clock.getEndTime());
-        clockDto.setStartTime(clock.getStartTime());
-        clockDto.setUserName(clock.getUser().getUserName());
-        return clockDto;
+    public static ClockResponse clockToDto(Clock clock){
+        ClockResponse clockResponse = new ClockResponse();
+        clockResponse.setClockId(clock.getClockId());
+        clockResponse.setActiveDate(clock.getActiveDate());
+        clockResponse.setActiveFlag(clock.isActiveFlag());
+        clockResponse.setEndTime(clock.getEndTime());
+        clockResponse.setStartTime(clock.getStartTime());
+        clockResponse.setUserName(clock.getUser().getUserName());
+        return clockResponse;
     }
 
 }

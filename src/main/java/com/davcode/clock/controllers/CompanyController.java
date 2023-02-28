@@ -1,8 +1,11 @@
 package com.davcode.clock.controllers;
 
+import com.davcode.clock.mappers.dto.CompanyResponse;
+import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Company;
 import com.davcode.clock.services.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,16 +21,17 @@ public class CompanyController {
     }
 
     @GetMapping(path = "/getAll")
-    public List<Company> getAll(){
+    public List<CompanyResponse> getAll(){
         return companyService.getAll();
     }
 
     @GetMapping(path = "/{id}")
-    public Company getCompany(@PathVariable("id") Long id){
-        return companyService.getById(id);
+    public CompanyResponse getCompany(@PathVariable("id") Long id){
+        return DtoMapper.CompanyToDto(companyService.getById(id));
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void postCompany(@RequestBody Company company){
         companyService.postCompany(company);
     }
