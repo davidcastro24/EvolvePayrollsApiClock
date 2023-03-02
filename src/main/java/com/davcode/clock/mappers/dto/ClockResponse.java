@@ -13,4 +13,5 @@ public class ClockResponse {
     private LocalTime endTime;
     private boolean underReview;
     private String userName;
+    private boolean activeFlag;
 }

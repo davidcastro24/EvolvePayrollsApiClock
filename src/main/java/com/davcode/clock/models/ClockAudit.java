@@ -25,4 +25,5 @@ public class ClockAudit {
     @OneToOne
     @JoinColumn(name = "audit_clock_id")
     private Clock auditClock;
+
 }

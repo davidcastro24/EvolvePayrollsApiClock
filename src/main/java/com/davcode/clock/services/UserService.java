@@ -7,7 +7,6 @@ import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.UserRepository;
 import com.davcode.clock.utils.Utils;
-import jdk.vm.ci.meta.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;

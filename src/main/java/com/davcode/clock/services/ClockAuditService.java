@@ -39,12 +39,14 @@ public class ClockAuditService {
     }
 
     public void authorizeRequest(ClockAudit clockAudit){
-        clockAudit.setAuthorizationStatus(true);
+        clockAudit.setAccepted(true);
+        clockAudit.setRejected(false);
         clockAuditRepository.save(clockAudit);
     }
 
     public void denyRequest(ClockAudit clockAudit){
-        clockAudit.setAuthorizationStatus(false);
+        clockAudit.setRejected(true);
+        clockAudit.setAccepted(false);
         clockAuditRepository.save(clockAudit);
     }
 
