@@ -4,6 +4,8 @@ import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
+import com.davcode.clock.models.Employee;
+import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class ClockService {
         clock.setActiveFlag(true);
         clock.setActiveDate(LocalDate.now());
         clock.setUser(
-                userService.getUser(userId)
+                userService.getUserByIdInternal(userId)
         );
 
         clockRepository.save(clock);
@@ -83,6 +85,22 @@ public class ClockService {
         clock.setActiveFlag(false);
         clock.setEndTime(LocalTime.now());
         clockRepository.save(clock);
+    }
+
+    public ClockResponse automaticTimeSet(Long userId){
+        User user = userService.getUserByIdInternal(userId);
+        if (user.isAutoScheduleAllowed()){
+            Employee employee = user.getEmployee();
+            Clock clock = new Clock();
+            clock.setUser(user);
+            clock.setStartTime(employee.getAssignedStartTime());
+            clock.setEndTime(employee.getAssignedEndTime());
+            clock.setActiveDate(LocalDate.now());
+            clock.setActiveFlag(true);
+            clockRepository.save(clock);
+            return DtoMapper.clockToDto(clock);
+        }
+        throw new Exceptions.NoAutomaticSchedulingForUser("User has no scheduling available");
     }
 
 }

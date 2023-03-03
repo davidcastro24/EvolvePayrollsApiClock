@@ -1,8 +1,10 @@
 package com.davcode.clock.services;
 
 import com.davcode.clock.enums.UserStatus;
+import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.RequestJson;
 import com.davcode.clock.mappers.RequestMapper;
+import com.davcode.clock.mappers.dto.RequestDTO;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.UserRepository;
@@ -126,7 +128,17 @@ public class UserService {
         }
     }
 
-    public User getUser(Long id){
+    public RequestDTO getUser(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent())
+            throw new Exceptions.UserNotFoundException("No user with id " + id);
+        RequestDTO requestDTO = new RequestDTO();
+        requestDTO.setUser(user.get());
+        requestDTO.setEmployee(user.get().getEmployee());
+        return requestDTO;
+    }
+
+    public User getUserByIdInternal(Long id){
         return userRepository.findById(id).get();
     }
 
