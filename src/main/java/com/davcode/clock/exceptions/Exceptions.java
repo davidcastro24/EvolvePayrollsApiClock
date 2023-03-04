@@ -47,4 +47,11 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class NoAutomaticSchedulingForUser extends Exceptions{
+
+        public NoAutomaticSchedulingForUser(String message) {
+            super(message);
+        }
+    }
+
 }

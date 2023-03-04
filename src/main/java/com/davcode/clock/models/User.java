@@ -22,6 +22,7 @@ public class User {
     private LocalDate suspensionDate;
     private boolean emailVerified;
     private char status;
+    private boolean autoScheduleAllowed;
     private LocalDate lastLogin;
     @OneToOne
     @JoinColumn(name = "employee_id")

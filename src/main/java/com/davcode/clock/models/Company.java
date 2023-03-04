@@ -19,5 +19,6 @@ public class Company {
     private TimeZone timeZone;
     private boolean emailVerificationRequired;
     private boolean isActive;
+    private boolean allowAutoSchedule;
 
 }

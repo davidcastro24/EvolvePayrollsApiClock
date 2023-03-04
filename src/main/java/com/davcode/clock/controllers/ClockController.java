@@ -38,4 +38,9 @@ public class ClockController {
         return clockService.getAllByUserId(userId);
     }
 
+    @PostMapping(path = "/automclock/{userId}")
+    public ClockResponse postAutomaticSchedule(@PathVariable Long userId){
+        return clockService.automaticTimeSet(userId);
+    }
+
 }
