@@ -8,8 +8,10 @@ import com.davcode.clock.models.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
+@Component
 public interface RequestMapper {
     RequestMapper INSTANCE = Mappers.getMapper(RequestMapper.class);
 

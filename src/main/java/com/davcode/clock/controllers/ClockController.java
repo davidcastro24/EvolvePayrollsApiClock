@@ -2,11 +2,9 @@ package com.davcode.clock.controllers;
 
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
-import com.davcode.clock.models.Clock;
 import com.davcode.clock.services.ClockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

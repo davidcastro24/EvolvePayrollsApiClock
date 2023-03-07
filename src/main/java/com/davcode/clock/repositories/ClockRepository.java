@@ -13,16 +13,16 @@ import java.util.List;
 public interface ClockRepository extends JpaRepository<Clock,Long> {
     List<Clock> findClockByUserId(Long userId);
 
-    @Query("SELECT e FROM Clock WHERE e.active_date = :active_date AND" +
-            " e.active_flag = :active_flag AND" +
-            " e.user_id = :user_id")
-    Clock findClockByActivity(@Param("active_date")LocalDate activeDate,
-                              @Param("active_flag") boolean activeFlag,
-                              @Param("user_id") Long userId);
+    @Query("SELECT c FROM Clock c WHERE c.activeDate = :activeDate AND" +
+            " c.activeFlag = :activeFlag AND" +
+            " c.user.id = :userId")
+    Clock findClockByActivity(@Param("activeDate")LocalDate activeDate,
+                              @Param("activeFlag") boolean activeFlag,
+                              @Param("userId") Long userId);
 
     Clock findClockByActiveDate(LocalDate activeDate);
 
-    @Query("SELECT * FROM Clock c JOIN User U ON c.companyid=u.companyid" )
+    /*@Query("SELECT * FROM Clock c JOIN User U ON c.companyid=u.companyid" )
     Clock findClockByActiveDateAndCompany(@Param("active_date") LocalDate activeDate,
-                                          @Param("company_id") Long CompanyId);
+                                          @Param("company_id") Long CompanyId);*/
 }
