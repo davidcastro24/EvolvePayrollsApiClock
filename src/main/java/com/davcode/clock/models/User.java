@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Data
 public class User {
     @Id
-    @Column(name = "user_id", nullable = false, unique = true)
-    private Long userId;
+    @Column( nullable = false, unique = true)
+    private Long id;
     @Column(unique = true)
     private String userName;
     private String password;

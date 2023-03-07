@@ -22,19 +22,16 @@ import java.util.Optional;
 public class UserService {
 
     private UserRepository userRepository;
-
-    @Autowired
     private RequestMapper requestMapper;
-
-    @Autowired
     private CompanyService companyService;
-
-    @Autowired
     private EmployeeService employeeService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RequestMapper requestMapper, CompanyService companyService, EmployeeService employeeService) {
         this.userRepository = userRepository;
+        this.requestMapper = requestMapper;
+        this.companyService = companyService;
+        this.employeeService = employeeService;
     }
 
     public void addUser(User user){
