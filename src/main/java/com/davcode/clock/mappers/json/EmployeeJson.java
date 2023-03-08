@@ -1,7 +1,10 @@
 package com.davcode.clock.mappers.json;
 
+import lombok.Data;
+
 import java.time.LocalTime;
 
+@Data
 public class EmployeeJson {
     private Long employeeId;
     private String firstName;

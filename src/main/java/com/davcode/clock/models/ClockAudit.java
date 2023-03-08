@@ -14,7 +14,7 @@ public class ClockAudit {
     @Id
     @GeneratedValue
     @Column(name = "clockaudit_id", nullable = false)
-    private Long clockAuditId;
+    private Long id;
     private LocalTime startTime;
     private LocalTime endTime;
     private boolean accepted;
@@ -24,6 +24,6 @@ public class ClockAudit {
     private String authUserName;
     @OneToOne
     @JoinColumn(name = "audit_clock_id")
-    private Clock auditClock;
+    private Clock clock;
 
 }
