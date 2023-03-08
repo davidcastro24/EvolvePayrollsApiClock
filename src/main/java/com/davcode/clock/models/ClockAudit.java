@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class ClockAudit {
     @Id
     @GeneratedValue
-    @Column(name = "clockaudit_id", nullable = false)
+    @Column(unique = true, nullable = false)
     private Long id;
     private LocalTime startTime;
     private LocalTime endTime;

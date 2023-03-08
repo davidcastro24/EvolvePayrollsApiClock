@@ -11,6 +11,27 @@ import com.davcode.clock.utils.Utils;
 
 public class DtoMapper {
 
+    public static Employee employeeJsonToObj(EmployeeJson employeeJson){
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeJson.getEmployeeId());
+        employee.setFirstName(employeeJson.getFirstName());
+        employee.setLastName(employeeJson.getLastName());
+        employee.setInternalEmployeeId(employeeJson.getInternalEmployeeId());
+        employee.setEmail(employeeJson.getEmail());
+        employee.setPositionId(employeeJson.getPositionId());
+        employee.setOrganizationId(employeeJson.getOrganizationId());
+        employee.setAssignedStartTime(employeeJson.getAssignedStartTime());
+        employee.setAssignedEndTime(employeeJson.getAssignedEndTime());
+        employee.setGroupId(employeeJson.getGroupId());
+        //employee.setCompany(employeeJson.getCompanyId());
+        return employee;
+    }
+
+    public static Employee addCompanyToExistingEmployee(Employee employee, Company company){
+        employee.setCompany(company);
+        return employee;
+    }
+
     public static EmployeeResponse employeeToDto(Employee employee){
         EmployeeResponse employeeResponse = new EmployeeResponse();
         employeeResponse.setId(employee.getEmployeeId());
