@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public void addUserAndEmployee(RequestJson requestJson){
-        Employee employee = new Employee();
+        /*Employee employee = new Employee();
         employee.setEmail(requestJson.getEmail());
         employee.setInternalEmployeeId(requestJson.getInternalEmployeeId());
         employee.setAssignedStartTime(Utils.ltparse(requestJson.getAssignedStartTime()));
@@ -64,8 +64,11 @@ public class UserService {
         user.setSuspensionDate(Utils.ldparse(requestJson.getSuspensionDate()));
         user.setEmailVerified(requestJson.isEmailVerified());
         user.setChangePasswordOnNextLogin(requestJson.isChangePasswordOnNextLogin());
-        user.setEmployee(employee);
-
+        user.setEmployee(employee);*/
+        RequestDTO requestDTO = requestMapper.toRequestDto(requestJson);
+        User user = requestDTO.getUser();
+        Employee employee = requestDTO.getEmployee();
+        employeeService.addEmployee(employee);
         addUser(user);
     }
 

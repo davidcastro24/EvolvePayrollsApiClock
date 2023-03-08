@@ -1,7 +1,9 @@
 package com.davcode.clock.mappers;
 
+import com.davcode.clock.mappers.json.UserJson;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
+import com.davcode.clock.utils.Utils;
 import lombok.Data;
 
 @Data
@@ -30,4 +32,6 @@ public class RequestJson {
     private String assignedStartTime;
     private String assignedEndTime;
     private Long companyId;
+
+
 }

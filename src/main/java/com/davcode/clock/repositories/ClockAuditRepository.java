@@ -12,8 +12,8 @@ import java.util.List;
 public interface ClockAuditRepository extends JpaRepository<ClockAudit,Long> {
     List<ClockAudit> findClockAuditByAuthUserName(String authUserName);
 
-    @Query("SELECT c FROM ClockAudit c " +
-            "JOIN c.clock cl JOIN cl.user u" +
-            "WHERE u.user_id = :userId")
-    List<ClockAudit> findClockAuditsByUserId(@Param("userId") Long userId);
+    /*@Query("SELECT c FROM ClockAudit c " +
+            "JOIN c.clock cl JOIN cl.user u " +
+            "WHERE u.userId = :userId")*/
+    List<ClockAudit> findAllByClock_User_Id(Long userId);
 }

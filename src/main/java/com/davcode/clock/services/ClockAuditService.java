@@ -31,7 +31,7 @@ public class ClockAuditService {
     }
 
     public List<ClockAudit> getAllByUser(Long userId){
-        return clockAuditRepository.findClockAuditsByUserId(userId);
+        return clockAuditRepository.findAllByClock_User_Id(userId);
     }
 
     public List<ClockAudit> getAllByAuthUser(String authUserName){

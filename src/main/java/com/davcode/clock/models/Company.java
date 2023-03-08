@@ -13,8 +13,8 @@ import java.util.TimeZone;
 public class Company {
     @Id
     @GeneratedValue
-    @Column(name = "company_id", nullable = false, unique = true)
-    private Long companyId;
+    @Column(nullable = false, unique = true)
+    private Long id;
     private String companyName;
     private TimeZone timeZone;
     private boolean emailVerificationRequired;
