@@ -1,5 +1,6 @@
 package com.davcode.clock.controllers;
 
+import com.davcode.clock.mappers.json.EmployeeJson;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public void addEmployee(@RequestBody Employee employee){
+    public void addEmployee(@RequestBody EmployeeJson employee){
         employeeService.addEmployee(employee);
     }
 
