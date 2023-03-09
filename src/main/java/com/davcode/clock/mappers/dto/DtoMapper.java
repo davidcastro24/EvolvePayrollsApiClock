@@ -13,7 +13,7 @@ public class DtoMapper {
 
     public static Employee employeeJsonToObj(EmployeeJson employeeJson){
         Employee employee = new Employee();
-        employee.setEmployeeId(employeeJson.getEmployeeId());
+        employee.setId(employeeJson.getEmployeeId());
         employee.setFirstName(employeeJson.getFirstName());
         employee.setLastName(employeeJson.getLastName());
         employee.setInternalEmployeeId(employeeJson.getInternalEmployeeId());
@@ -34,7 +34,7 @@ public class DtoMapper {
 
     public static EmployeeResponse employeeToDto(Employee employee){
         EmployeeResponse employeeResponse = new EmployeeResponse();
-        employeeResponse.setId(employee.getEmployeeId());
+        employeeResponse.setId(employee.getId());
         employeeResponse.setEmail(employee.getEmail());
         employeeResponse.setInternalId(employee.getInternalEmployeeId());
         employeeResponse.setName(employee.getFirstName() + " " + employee.getLastName());
@@ -46,7 +46,7 @@ public class DtoMapper {
         UserResponse userResponse = new UserResponse();
         userResponse.setUserName(user.getUserName());
         userResponse.setId(user.getId());
-        userResponse.setEmployeeId(user.getEmployee().getEmployeeId());
+        userResponse.setEmployeeId(user.getEmployee().getId());
         userResponse.setRole(user.getRole());
         return userResponse;
     }

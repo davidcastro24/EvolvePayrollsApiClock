@@ -13,8 +13,9 @@ import java.time.LocalTime;
 public class Clock {
     @Id
     @GeneratedValue
-    @Column(name = "clock_id", nullable = false)
+    @Column(unique = true, nullable = false)
     private Long clockId;
+
     private LocalDate activeDate;
     private LocalTime startTime;
     private LocalTime endTime;
