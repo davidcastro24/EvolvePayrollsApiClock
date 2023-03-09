@@ -11,8 +11,8 @@ import java.time.LocalTime;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
+    @Column(unique = true, nullable = false)
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
