@@ -17,4 +17,7 @@ public class EmployeeJson {
     private LocalTime assignedStartTime;
     private LocalTime assignedEndTime;
     private Long companyId;
+    private Long monthlySalary;
+    private Long hourlySalary;
+    private String contractType;
 }

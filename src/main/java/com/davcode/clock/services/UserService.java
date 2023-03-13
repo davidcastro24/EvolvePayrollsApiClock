@@ -4,17 +4,16 @@ import com.davcode.clock.enums.UserStatus;
 import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.RequestJson;
 import com.davcode.clock.mappers.RequestMapper;
+import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.mappers.dto.RequestDTO;
+import com.davcode.clock.mappers.dto.UserResponse;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.UserRepository;
-import com.davcode.clock.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -76,14 +75,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void changeUserStatus(Long id, char newStatus){
+    public void updateUserStatus(Long id, char newStatus){
         Optional<User> userInDB = userRepository.findById(id);
-        if (userInDB.isPresent()){
-            if(Arrays.stream(UserStatus.values()).anyMatch(userStatus -> userStatus.getValue() == newStatus)){
-                User user = userInDB.get();
-                user.setStatus(newStatus);
-                userRepository.save(user);
-            }
+        if (!userInDB.isPresent())
+            throw new Exceptions.UserNotFoundException("User not found");
+        if(Arrays.stream(UserStatus.values()).anyMatch(userStatus -> userStatus.getValue() == newStatus)){
+            User user = userInDB.get();
+            user.setStatus(newStatus);
+            userRepository.save(user);
         }
     }
 
@@ -98,34 +97,36 @@ public class UserService {
 
     public void updateEmailConfirmation(Long id){
         Optional<User> userInDB = userRepository.findById(id);
-        if (userInDB.isPresent()){
-            User user = userInDB.get();
-            user.setEmailVerified(true);
-            userRepository.save(user);
-        }
+        if (userInDB.isPresent())
+            throw new Exceptions.UserNotFoundException("No user with id " + id);
+        User user = userInDB.get();
+        user.setEmailVerified(true);
+        userRepository.save(user);
     }
 
-    public User getByUserName(String userName){
-        return userRepository.findUserByUserName(userName);
+    public UserResponse getByUserName(String userName){
+        return DtoMapper.UserToDto(userRepository.findUserByUserName(userName));
     }
 
     public void invalidateUser(Long id){
         Optional<User> userInDB = userRepository.findById(id);
-        if (userInDB.isPresent()){
-            User user = userInDB.get();
-            user.setActive(false);
-            user.setStatus(UserStatus.I.getValue());
-            user.setSuspensionDate(LocalDate.now());
-        }
+        if (!userInDB.isPresent())
+            throw new Exceptions.UserNotFoundException("No user with id " + id);
+        User user = userInDB.get();
+        user.setActive(false);
+        user.setStatus(UserStatus.I.getValue());
+        user.setSuspensionDate(LocalDate.now());
+
+
     }
 
     public void updatePassword(Long id, String password){
         Optional<User> userInDB = userRepository.findById(id);
-        if (userInDB.isPresent()){
-            User user = userInDB.get();
-            user.setPassword(password);
-            userRepository.save(user);
-        }
+        if (userInDB.isPresent())
+            throw new Exceptions.UserNotFoundException("No user with id " + id);
+        User user = userInDB.get();
+        user.setPassword(password);
+        userRepository.save(user);
     }
 
     public RequestDTO getUser(Long id){

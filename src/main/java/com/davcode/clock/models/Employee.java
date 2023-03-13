@@ -22,6 +22,9 @@ public class Employee {
     private Integer positionId;
     private LocalTime assignedStartTime;
     private LocalTime assignedEndTime;
+    private Long monthlySalary;
+    private Long hourlySalary;
+    private String contractType;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
