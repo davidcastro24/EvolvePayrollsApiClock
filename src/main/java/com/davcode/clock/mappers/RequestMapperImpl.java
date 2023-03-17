@@ -31,13 +31,13 @@ public class RequestMapperImpl implements RequestMapper{
     @Override
     public User toUser(UserJson userj) {
         User user = new User();
-        user.setId(userj.getUserId());
+        //user.setId(userj.getUserId());
         user.setUserName(userj.getUserName());
         user.setActive(userj.isActive());
         user.setPassword(userj.getPassword());
         user.setStatus(userj.getStatus());
         user.setEmailVerified(userj.isEmailVerified());
-        user.setRole(userj.getRole());
+        user.setRoles(userj.getRoles());
         user.setCreationDate(userj.getCreationDate());
         user.setAutoScheduleAllowed(userj.isAutoScheduleAllowed());
         user.setEmployee(toEmployee(userj.getEmployee()));
@@ -54,7 +54,8 @@ public class RequestMapperImpl implements RequestMapper{
         employee.setLastName(employeej.getLastName());
         employee.setAssignedStartTime(employeej.getAssignedStartTime());
         employee.setAssignedEndTime(employeej.getAssignedEndTime());
-        employee.setCompany(companyService.getById(employeej.getCompanyId()));
+        if (employeej.getCompanyId() > 0)
+            employee.setCompany(companyService.getById(employeej.getCompanyId()));
         return employee;
     }
 }

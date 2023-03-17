@@ -6,15 +6,18 @@ import com.davcode.clock.mappers.RequestJson;
 import com.davcode.clock.mappers.RequestMapper;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.mappers.dto.RequestDTO;
+import com.davcode.clock.mappers.dto.ResponseDTO;
 import com.davcode.clock.mappers.dto.UserResponse;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,50 +27,32 @@ public class UserService {
     private RequestMapper requestMapper;
     private CompanyService companyService;
     private EmployeeService employeeService;
+    private UserDetailsServiceImpl userDetailsService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RequestMapper requestMapper, CompanyService companyService, EmployeeService employeeService) {
+    public UserService(UserRepository userRepository, RequestMapper requestMapper, CompanyService companyService, EmployeeService employeeService, UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.requestMapper = requestMapper;
         this.companyService = companyService;
         this.employeeService = employeeService;
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void addUser(User user){
         user.setCreationDate(LocalDate.now());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     public void addUserAndEmployee(RequestJson requestJson){
-        /*Employee employee = new Employee();
-        employee.setEmail(requestJson.getEmail());
-        employee.setInternalEmployeeId(requestJson.getInternalEmployeeId());
-        employee.setAssignedStartTime(Utils.ltparse(requestJson.getAssignedStartTime()));
-        employee.setAssignedEndTime(Utils.ltparse(requestJson.getAssignedEndTime()));
-        employee.setGroupId(requestJson.getGroupId());
-        employee.setFirstName(requestJson.getFirstName());
-        employee.setLastName(requestJson.getLastName());
-        employee.setOrganizationId(requestJson.getOrganizationId());
-        employee.setPositionId(requestJson.getPositionId());
-        employee.setCompany(companyService.getById(requestJson.getCompanyId()));
-
-        employeeService.addEmployee(employee);
-
-        User user = new User();
-        user.setUserName(requestJson.getUserName());
-        user.setCreationDate(LocalDate.now());
-        user.setStatus(requestJson.getStatus());
-        user.setActive(requestJson.isActive());
-        user.setPassword(requestJson.getPassword());
-        user.setRole(requestJson.getRole());
-        user.setSuspensionDate(Utils.ldparse(requestJson.getSuspensionDate()));
-        user.setEmailVerified(requestJson.isEmailVerified());
-        user.setChangePasswordOnNextLogin(requestJson.isChangePasswordOnNextLogin());
-        user.setEmployee(employee);*/
         RequestDTO requestDTO = requestMapper.toRequestDto(requestJson);
         User user = requestDTO.getUser();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Employee employee = requestDTO.getEmployee();
         employeeService.addEmployee(employee);
+        user.setEmployee(employee);
         addUser(user);
     }
 
@@ -105,7 +90,7 @@ public class UserService {
     }
 
     public UserResponse getByUserName(String userName){
-        return DtoMapper.UserToDto(userRepository.findUserByUserName(userName));
+        return DtoMapper.UserToDto(userRepository.findByUserName(userName));
     }
 
     public void invalidateUser(Long id){
@@ -129,7 +114,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public RequestDTO getUser(Long id){
+    /*public RequestDTO getUser(Long id){
         Optional<User> user = userRepository.findById(id);
         if (!user.isPresent())
             throw new Exceptions.UserNotFoundException("No user with id " + id);
@@ -137,10 +122,27 @@ public class UserService {
         requestDTO.setUser(user.get());
         requestDTO.setEmployee(user.get().getEmployee());
         return requestDTO;
+    }*/
+
+    public UserResponse getUser(String username){
+        User user = userRepository.findByUserName(username);
+        UserResponse userResponse = DtoMapper.UserToDto(user);
+        return userResponse;
     }
 
     public User getUserByIdInternal(Long id){
         return userRepository.findById(id).get();
+    }
+
+    public ResponseDTO getUserAndEmployee(Long userId){
+        Optional<User> user = userRepository.findById(userId);
+        if (!user.isPresent())
+            throw new Exceptions.UserNotFoundException("No user with id " + userId);
+        return new ResponseDTO(
+                DtoMapper.UserToDto(user.get()),
+                DtoMapper.employeeToDto(user.get().getEmployee())
+        );
+
     }
 
 }

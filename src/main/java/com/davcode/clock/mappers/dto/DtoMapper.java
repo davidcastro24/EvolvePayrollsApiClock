@@ -38,6 +38,11 @@ public class DtoMapper {
         employeeResponse.setEmail(employee.getEmail());
         employeeResponse.setInternalId(employee.getInternalEmployeeId());
         employeeResponse.setName(employee.getFirstName() + " " + employee.getLastName());
+        employeeResponse.setCompanyId(employee.getCompany().getId());
+        employeeResponse.setCompanyName(employee.getCompany().getCompanyName());
+        employeeResponse.setMonthlySalary(employee.getMonthlySalary());
+        employeeResponse.setHourlySalary(employee.getHourlySalary());
+        employeeResponse.setContractType(employee.getContractType());
 
         return employeeResponse;
     }
@@ -46,8 +51,18 @@ public class DtoMapper {
         UserResponse userResponse = new UserResponse();
         userResponse.setUserName(user.getUserName());
         userResponse.setId(user.getId());
-        userResponse.setEmployeeId(user.getEmployee().getId());
-        userResponse.setRole(user.getRole());
+        userResponse.setRoles(user.getRoles());
+        userResponse.setActive(user.isActive());
+        userResponse.setCreationDate(user.getCreationDate());
+        userResponse.setChangePasswordOnNextLogin(user.isChangePasswordOnNextLogin());
+        userResponse.setSuspensionDate(user.getSuspensionDate());
+        userResponse.setEmailVerified(user.isEmailVerified());
+        userResponse.setStatus(user.getStatus());
+        userResponse.setAutoScheduleAllowed(user.isAutoScheduleAllowed());
+        userResponse.setLastLogin(user.getLastLogin());
+        userResponse.setCredentialsExpired(user.isCredentialsExpired());
+        if (user.getEmployee() != null)
+            userResponse.setEmployeeId(user.getEmployee().getId());
         return userResponse;
     }
 
@@ -79,8 +94,10 @@ public class DtoMapper {
             userJson.setEmailVerified(requestJson.isEmailVerified());
             userJson.setPassword(requestJson.getPassword());
             userJson.setStatus(requestJson.getStatus());
-            userJson.setRole(requestJson.getRole());
+            userJson.setRoles(requestJson.getRoles());
             userJson.setEmployee(ReqJsonToEmployeeJson(requestJson));
+            userJson.setChangePasswordOnNextLogin(requestJson.isChangePasswordOnNextLogin());
+            userJson.setCredentialsExpired(requestJson.isCredentialsExpired());
             return userJson;
     }
 
@@ -97,6 +114,9 @@ public class DtoMapper {
         employeeJson.setOrganizationId(requestJson.getOrganizationId());
         employeeJson.setPositionId(requestJson.getPositionId());
         employeeJson.setCompanyId(requestJson.getCompanyId());
+        employeeJson.setMonthlySalary(requestJson.getMonthlySalary());
+        employeeJson.setHourlySalary(requestJson.getHourlySalary());
+        employeeJson.setContractType(requestJson.getContractType());
         return employeeJson;
     }
 
