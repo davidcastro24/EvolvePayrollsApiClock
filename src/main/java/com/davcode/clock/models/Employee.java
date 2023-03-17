@@ -26,7 +26,7 @@ public class Employee {
     private Long hourlySalary;
     private String contractType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id")
     private Company company;
 

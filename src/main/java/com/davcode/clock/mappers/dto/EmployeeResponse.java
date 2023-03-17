@@ -9,6 +9,7 @@ public class EmployeeResponse {
     private String email;
     private Long internalId;
     private Long companyId;
+    private String companyName;
     private Long monthlySalary;
     private Long hourlySalary;
     private String contractType;
