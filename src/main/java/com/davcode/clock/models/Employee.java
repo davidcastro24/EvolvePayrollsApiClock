@@ -25,6 +25,8 @@ public class Employee {
     private Long monthlySalary;
     private Long hourlySalary;
     private String contractType;
+    private boolean emailConfirmationRequired;
+    private boolean autoScheduleAllowed;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id")

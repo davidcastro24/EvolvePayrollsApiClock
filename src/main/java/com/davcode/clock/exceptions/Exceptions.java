@@ -54,4 +54,11 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class CompanyNotFoundException extends Exceptions{
+
+        public CompanyNotFoundException(String message) {
+            super(message);
+        }
+    }
+
 }

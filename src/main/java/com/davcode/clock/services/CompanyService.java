@@ -1,25 +1,31 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.CompanyResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Company;
+import com.davcode.clock.models.Employee;
+import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
+
 
 @Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final UserService userService;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository,UserService userService) {
         this.companyRepository = companyRepository;
+        this.userService = userService;
     }
 
     public List<CompanyResponse> getAll(){
@@ -56,10 +62,32 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-   public void changeActivationStatus(Long companyId, boolean activationStatus){
+   public void setActivationStatus(Long companyId, boolean activationStatus){
         Company company = companyRepository.findById(companyId).get();
         company.setActive(activationStatus);
         companyRepository.save(company);
+    }
+
+    public void setEmailConfirmation(Long id, boolean emailConfirmation){
+        Optional<Company> company = companyRepository.findById(id);
+        if (!company.isPresent())
+            throw new Exceptions.CompanyNotFoundException("No such Company with id " + id);
+        List<User> users = userService.getUsersFromCompany(id);
+        users.forEach(user -> {
+            user.setEmailConfirmationRequired(emailConfirmation);
+            userService.updateUser(user);
+        });
+    }
+
+    public void setAutoScheduleAllowed(Long id,boolean autoScheduleAllowed){
+        Optional<Company> company = companyRepository.findById(id);
+        if (!company.isPresent())
+            throw new Exceptions.CompanyNotFoundException("No such Company with id " + id);
+        List<User> users = userService.getUsersFromCompany(id);
+        users.forEach(user -> {
+            user.setAutoScheduleAllowed(autoScheduleAllowed);
+            userService.updateUser(user);
+        });
     }
 
 }

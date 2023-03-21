@@ -47,6 +47,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployeesFromCompany(Long companyId){
-        return employeeRepository.findEmployeesByCompanyId(companyId);
+        return employeeRepository.findAllByCompany_Id(companyId);
     }
 }

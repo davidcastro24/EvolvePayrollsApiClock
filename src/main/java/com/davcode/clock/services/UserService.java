@@ -53,6 +53,7 @@ public class UserService {
         Employee employee = requestDTO.getEmployee();
         employeeService.addEmployee(employee);
         user.setEmployee(employee);
+        user.setAutoScheduleAllowed(employee.getCompany().isAllowAutoSchedule());
         addUser(user);
     }
 
@@ -143,6 +144,14 @@ public class UserService {
                 DtoMapper.employeeToDto(user.get().getEmployee())
         );
 
+    }
+
+    List<User> getUsersFromCompany(Long companyId){
+        return userRepository.findAllByEmployee_Company_Id(companyId);
+    }
+
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 
 }

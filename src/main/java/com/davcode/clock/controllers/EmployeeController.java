@@ -4,7 +4,6 @@ import com.davcode.clock.mappers.json.EmployeeJson;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
