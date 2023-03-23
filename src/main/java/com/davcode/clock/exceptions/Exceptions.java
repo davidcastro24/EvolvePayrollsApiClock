@@ -61,4 +61,10 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class ConflictedScheduleException extends Exceptions {
+        public ConflictedScheduleException(String message) {
+            super(message);
+        }
+    }
+
 }

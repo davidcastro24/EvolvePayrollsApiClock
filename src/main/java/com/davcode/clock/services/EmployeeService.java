@@ -1,13 +1,16 @@
 package com.davcode.clock.services;
 
 import com.davcode.clock.mappers.dto.DtoMapper;
+import com.davcode.clock.mappers.dto.EmployeeResponse;
 import com.davcode.clock.mappers.json.EmployeeJson;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -46,7 +49,19 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public List<Employee> getAllEmployeesFromCompany(Long companyId){
-        return employeeRepository.findAllByCompany_Id(companyId);
+    public List<EmployeeResponse> getAllEmployeesFromCompany(Long companyId){
+        return employeeRepository.findAllByCompany_Id(companyId)
+                .stream()
+                .map(e -> DtoMapper.employeeToDto(e))
+                .collect(Collectors.toList());
     }
+
+    public Long calculateHourlySalary(Employee employee){
+        long workingHours = employee.getAssignedStartTime().until(employee.getAssignedEndTime(), ChronoUnit.HOURS);
+        workingHours *= 5; //5 days of week
+        workingHours *= 4; // 4 weeks a month
+        return employee.getMonthlySalary()/workingHours;
+    }
+
+
 }

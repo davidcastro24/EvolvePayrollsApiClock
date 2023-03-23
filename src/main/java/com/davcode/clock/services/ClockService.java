@@ -7,6 +7,7 @@ import com.davcode.clock.models.Clock;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockRepository;
+import jdk.vm.ci.meta.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,24 +21,24 @@ import java.util.stream.Collectors;
 public class ClockService {
 
     private final ClockRepository clockRepository;
+    private final UserService userService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    public ClockService(ClockRepository clockRepository) {
+    public ClockService(ClockRepository clockRepository, UserService userService) {
         this.clockRepository = clockRepository;
+        this.userService = userService;
     }
 
     public void addClock(Long userId){
         Clock clock = new Clock();
+        User user = userService.getUserByIdInternal(userId);
         clock.setStartTime(LocalTime.now());
         clock.setActiveFlag(true);
         clock.setActiveDate(LocalDate.now());
-        clock.setUser(
-                userService.getUserByIdInternal(userId)
-        );
-
+        clock.setUser(user);
+        clock.setUnderReview(false);
+        if (user.isAutoScheduleAllowed())
+            clock.setEndTime(user.getEmployee().getAssignedEndTime());
         clockRepository.save(clock);
     }
 

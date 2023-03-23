@@ -65,6 +65,10 @@ public class CompanyService {
    public void setActivationStatus(Long companyId, boolean activationStatus){
         Company company = companyRepository.findById(companyId).get();
         company.setActive(activationStatus);
+        if (!activationStatus)
+            userService.getUsersFromCompany(companyId).forEach(user -> {
+                userService.updateActiveFlag(user.getId(), false);
+            });
         companyRepository.save(company);
     }
 
