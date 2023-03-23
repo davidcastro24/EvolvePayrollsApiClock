@@ -4,10 +4,9 @@ import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
-import com.davcode.clock.models.Employee;
+import com.davcode.clock.models.ClockAudit;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockRepository;
-import jdk.vm.ci.meta.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,7 @@ public class ClockService {
         clock.setUser(user);
         clock.setUnderReview(false);
         if (user.isAutoScheduleAllowed())
+            deactivateAllActiveClocksFromUser(user);
             clock.setEndTime(user.getEmployee().getAssignedEndTime());
         clockRepository.save(clock);
     }
@@ -64,6 +64,16 @@ public class ClockService {
         return clocks.stream().map(c -> DtoMapper.clockToDto(c)).collect(Collectors.toList());
     }
 
+    public void deactivateAllActiveClocksFromUser(User user){
+        clockRepository.findClockByUserId(user.getId())
+                .stream()
+                .filter(c -> c.isActiveFlag())
+                .forEach(clock -> {
+                    clock.setActiveFlag(false);
+                    clockRepository.save(clock);
+                });
+    }
+
     public ClockResponse getCurrentClock(Long userId){
         Optional<Clock> currentClock = Optional.of(clockRepository.findClockByActivity(LocalDate.now(),true, userId));
         if (currentClock.isPresent())
@@ -71,16 +81,16 @@ public class ClockService {
         throw new Exceptions.ClockNotFoundException("No active clocks");
     }
 
-    public void updateTimePeriod(Clock clock){
-        clock.setUnderReview(true);
-        clockRepository.save(clock);
-    }
-
-    public void checkIn(Clock clock){
-        clock.setActiveFlag(true);
-        clock.setStartTime(LocalTime.now());
-        clockRepository.save(clock);
-    }
+   /* public void submitUpdateTimePeriod(LocalTime startTime, LocalTime endTime, Long clockId){
+        if (startTime.isAfter(endTime) || startTime.equals(endTime))
+            throw new Exceptions.StartTimeIsAfterEndTimeException("Check inputted times");
+        ClockAudit clockAudit = new ClockAudit();
+        clockAudit.setStartTime(startTime);
+        clockAudit.setEndTime(endTime);
+        clockAudit.setSubmitDate(LocalDate.now());
+        clockAudit.setClock(getClock(clockId));
+        clockAuditService.addClockAudit(clockAudit);
+    }*/
 
     public void checkOut(Clock clock){
         clock.setActiveFlag(false);
@@ -88,20 +98,13 @@ public class ClockService {
         clockRepository.save(clock);
     }
 
-    public ClockResponse automaticTimeSet(Long userId){
-        User user = userService.getUserByIdInternal(userId);
-        if (user.isAutoScheduleAllowed()){
-            Employee employee = user.getEmployee();
-            Clock clock = new Clock();
-            clock.setUser(user);
-            clock.setStartTime(employee.getAssignedStartTime());
-            clock.setEndTime(employee.getAssignedEndTime());
-            clock.setActiveDate(LocalDate.now());
-            clock.setActiveFlag(true);
-            clockRepository.save(clock);
-            return DtoMapper.clockToDto(clock);
-        }
-        throw new Exceptions.NoAutomaticSchedulingForUser("User has no scheduling available");
+    public void updateTime(Long clockId, LocalTime startTime, LocalTime endTime){
+        Clock clock = getClock(clockId);
+        clock.setStartTime(startTime);
+        clock.setEndTime(endTime);
+        clock.setUnderReview(false);
+        clockRepository.save(clock);
     }
+
 
 }

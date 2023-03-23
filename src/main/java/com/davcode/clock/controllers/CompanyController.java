@@ -36,15 +36,15 @@ public class CompanyController {
         companyService.postCompany(company);
     }
 
-    @PutMapping(path = "/deactivate/{companyId}")
+    /*@PutMapping(path = "/deactivate/{companyId}")
     public void deactivate(@PathVariable Long companyId){
-        companyService.changeActivationStatus(companyId,false);
+        companyService.setActivationStatus(companyId,false);
     }
 
     @PutMapping(path = "/reactivate/{companyId}")
     public void reactivate(@PathVariable Long companyId){
-        companyService.changeActivationStatus(companyId,true);
-    }
+        companyService.setActivationStatus(companyId,true);
+    }*/
 
     @PutMapping(path = "/updateTimeZone/{companyId}")
     public void updateTimeZone(@PathVariable Long companyId,

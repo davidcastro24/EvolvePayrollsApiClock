@@ -1,7 +1,7 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.models.Clock;
 import com.davcode.clock.models.ClockAudit;
-import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,12 @@ import java.util.List;
 public class ClockAuditService {
 
     private final ClockAuditRepository clockAuditRepository;
+    private final ClockService clockService;
 
     @Autowired
-    public ClockAuditService(ClockAuditRepository clockAuditRepository) {
+    public ClockAuditService(ClockAuditRepository clockAuditRepository, ClockService clockService) {
         this.clockAuditRepository = clockAuditRepository;
+        this.clockService = clockService;
     }
 
     public void addClockAudit(ClockAudit clockAudit){
@@ -38,10 +40,15 @@ public class ClockAuditService {
         return clockAuditRepository.findClockAuditByAuthUserName(authUserName);
     }
 
-    public void authorizeRequest(ClockAudit clockAudit){
+    public void authorizeRequest(Long id){
+        ClockAudit clockAudit = getClockAuditById(id);
         clockAudit.setAccepted(true);
         clockAudit.setRejected(false);
         clockAuditRepository.save(clockAudit);
+
+        Clock clock = clockService.getClock(clockAudit.getClock().getClockId());
+
+
     }
 
     public void denyRequest(ClockAudit clockAudit){

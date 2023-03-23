@@ -67,4 +67,10 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class StartTimeIsAfterEndTimeException extends Exceptions {
+        public StartTimeIsAfterEndTimeException(String message) {
+            super(message);
+        }
+    }
+
 }

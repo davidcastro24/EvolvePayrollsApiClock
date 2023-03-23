@@ -4,7 +4,6 @@ import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.CompanyResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Company;
-import com.davcode.clock.models.Employee;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +16,13 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class CompanyService {
+public class CompanyService{
 
     private final CompanyRepository companyRepository;
     private final UserService userService;
 
     @Autowired
-    public CompanyService(CompanyRepository companyRepository,UserService userService) {
+    public CompanyService(CompanyRepository companyRepository, UserService userService) {
         this.companyRepository = companyRepository;
         this.userService = userService;
     }

@@ -16,13 +16,12 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final CompanyService companyService;
 
     @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, CompanyService companyService) {
         this.employeeRepository = employeeRepository;
+        this.companyService = companyService;
     }
 
     public void addEmployee(EmployeeJson employeeJson){
