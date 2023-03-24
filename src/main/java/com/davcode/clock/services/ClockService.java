@@ -67,7 +67,7 @@ public class ClockService {
     public void deactivateAllActiveClocksFromUser(User user){
         clockRepository.findClockByUserId(user.getId())
                 .stream()
-                .filter(c -> c.isActiveFlag())
+                .filter(Clock::isActiveFlag)
                 .forEach(clock -> {
                     clock.setActiveFlag(false);
                     clockRepository.save(clock);
@@ -75,11 +75,29 @@ public class ClockService {
     }
 
     public ClockResponse getCurrentClock(Long userId){
-        Optional<Clock> currentClock = Optional.of(clockRepository.findClockByActivity(LocalDate.now(),true, userId));
+        Optional<Clock> currentClock = Optional.of(
+                clockRepository.findClockByUserIdAndActiveFlagAndActiveDate(userId,
+                        true,
+                        LocalDate.now()
+                )
+        );
         if (currentClock.isPresent())
             return DtoMapper.clockToDto(currentClock.get());
         throw new Exceptions.ClockNotFoundException("No active clocks");
     }
+
+    public List<Clock> getAllActiveClocksFromCompany(Long companyId){
+        List<User> users = userService.getUsersFromCompany(companyId);
+        return clockRepository.findByUserIdAndActiveFlag(
+                users.stream().map(User::getId).collect(Collectors.toList()),
+                true
+        );
+    }
+
+    public void deleteClock(Long clockId){
+        clockRepository.deleteById(clockId);
+    }
+
 
    /* public void submitUpdateTimePeriod(LocalTime startTime, LocalTime endTime, Long clockId){
         if (startTime.isAfter(endTime) || startTime.equals(endTime))
@@ -103,6 +121,12 @@ public class ClockService {
         clock.setStartTime(startTime);
         clock.setEndTime(endTime);
         clock.setUnderReview(false);
+        clockRepository.save(clock);
+    }
+
+    public void setUnderReview(Long clockId, boolean underReview){
+        Clock clock = getClock(clockId);
+        clock.setUnderReview(underReview);
         clockRepository.save(clock);
     }
 

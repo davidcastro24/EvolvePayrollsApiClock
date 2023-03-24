@@ -20,7 +20,11 @@ public interface ClockRepository extends JpaRepository<Clock,Long> {
                               @Param("activeFlag") boolean activeFlag,
                               @Param("userId") Long userId);
 
+    Clock findClockByUserIdAndActiveFlagAndActiveDate(Long userId, boolean activeFlag, LocalDate activeDate);
+
     Clock findClockByActiveDate(LocalDate activeDate);
+
+    List<Clock> findByUserIdAndActiveFlag(List<Long> userIds, boolean activeFlag);
 
     /*@Query("SELECT * FROM Clock c JOIN User U ON c.companyid=u.companyid" )
     Clock findClockByActiveDateAndCompany(@Param("active_date") LocalDate activeDate,

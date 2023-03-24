@@ -6,6 +6,8 @@ import com.davcode.clock.repositories.ClockAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -40,15 +42,18 @@ public class ClockAuditService {
         return clockAuditRepository.findClockAuditByAuthUserName(authUserName);
     }
 
-    public void authorizeRequest(Long id){
+    public void authorizeRequest(Long id, String authUsername){
         ClockAudit clockAudit = getClockAuditById(id);
         clockAudit.setAccepted(true);
         clockAudit.setRejected(false);
+        clockAudit.setAuthUserName(authUsername);
+        clockAudit.setAuthorizationDate(LocalDate.now());
         clockAuditRepository.save(clockAudit);
-
-        Clock clock = clockService.getClock(clockAudit.getClock().getClockId());
-
-
+        clockService.updateTime(
+                clockAudit.getClock().getClockId(),
+                clockAudit.getStartTime(),
+                clockAudit.getEndTime()
+        );
     }
 
     public void denyRequest(ClockAudit clockAudit){
@@ -59,6 +64,19 @@ public class ClockAuditService {
 
     public void deleteClockAudit(Long id){
         clockAuditRepository.deleteById(id);
+    }
+
+    public void submitRequest(Long clockId, LocalTime startTime, LocalTime endTime){
+        Clock clock = clockService.getClock(clockId);
+        ClockAudit clockAudit = new ClockAudit();
+        clockAudit.setClock(clock);
+        clockAudit.setSubmitDate(LocalDate.now());
+        clockAudit.setStartTime(startTime);
+        clockAudit.setEndTime(endTime);
+        clockAudit.setRejected(false);
+        clockAudit.setAccepted(false);
+        addClockAudit(clockAudit);
+        clockService.setUnderReview(clockId,true);
     }
 
 

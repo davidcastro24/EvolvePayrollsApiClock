@@ -1,5 +1,6 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.mappers.dto.EmployeeResponse;
 import com.davcode.clock.mappers.json.EmployeeJson;
@@ -29,6 +30,10 @@ public class EmployeeService {
         employee = DtoMapper.addCompanyToExistingEmployee(
                 employee,
                 companyService.getById(employeeJson.getCompanyId()));
+        if (employee.getHourlySalary() <= 0)
+            employee.setHourlySalary(calculateHourlySalary(employee));
+        if (employee.getAssignedStartTime().isBefore(employee.getAssignedEndTime()))
+            throw new Exceptions.StartTimeIsAfterEndTimeException("Error in times");
         employeeRepository.save(employee);
     }
 
@@ -36,8 +41,8 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public Employee getEmployee(Long id){
-        return employeeRepository.findById(id).get();
+    public EmployeeResponse getEmployee(Long id){
+        return DtoMapper.employeeToDto(employeeRepository.findById(id).get());
     }
 
     public void updateEmployee(Employee employee){
