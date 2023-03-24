@@ -36,16 +36,6 @@ public class CompanyController {
         companyService.postCompany(company);
     }
 
-    /*@PutMapping(path = "/deactivate/{companyId}")
-    public void deactivate(@PathVariable Long companyId){
-        companyService.setActivationStatus(companyId,false);
-    }
-
-    @PutMapping(path = "/reactivate/{companyId}")
-    public void reactivate(@PathVariable Long companyId){
-        companyService.setActivationStatus(companyId,true);
-    }*/
-
     @PutMapping(path = "/updateTimeZone/{companyId}")
     public void updateTimeZone(@PathVariable Long companyId,
                                @RequestBody String timeZone){
@@ -60,6 +50,21 @@ public class CompanyController {
     @DeleteMapping(path = "/{companyId}")
     public void deleteCompany(@PathVariable Long companyId){
         companyService.deleteCompany(companyId);
+    }
+
+    @PutMapping(path = "/activation/{id}")
+    public void setActivationStatus(@PathVariable Long id, @RequestBody boolean activationStatus){
+        companyService.setActivationStatus(id,activationStatus);
+    }
+
+    @PutMapping(path = "/email-confirm/{id}")
+    public void setEmailConfirmation(@PathVariable Long id, @RequestBody boolean emailConfirmation){
+        companyService.setEmailConfirmation(id,emailConfirmation);
+    }
+
+    @PutMapping(path = "/auto-schedule/{id}")
+    public void setAutoScheduleAllowed(@PathVariable Long id, @RequestBody boolean autoScheduleAllowed){
+        companyService.setAutoScheduleAllowed(id,autoScheduleAllowed);
     }
 
 
