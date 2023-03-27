@@ -43,6 +43,7 @@ public class User {
     private boolean autoScheduleAllowed;
     private LocalDate lastLogin;
     private boolean credentialsExpired;
+    private boolean emailConfirmationRequired;
 
     @OneToOne//(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "employee_id")

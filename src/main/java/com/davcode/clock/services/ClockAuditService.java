@@ -1,21 +1,25 @@
 package com.davcode.clock.services;
 
+import com.davcode.clock.models.Clock;
 import com.davcode.clock.models.ClockAudit;
-import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 public class ClockAuditService {
 
     private final ClockAuditRepository clockAuditRepository;
+    private final ClockService clockService;
 
     @Autowired
-    public ClockAuditService(ClockAuditRepository clockAuditRepository) {
+    public ClockAuditService(ClockAuditRepository clockAuditRepository, ClockService clockService) {
         this.clockAuditRepository = clockAuditRepository;
+        this.clockService = clockService;
     }
 
     public void addClockAudit(ClockAudit clockAudit){
@@ -38,10 +42,18 @@ public class ClockAuditService {
         return clockAuditRepository.findClockAuditByAuthUserName(authUserName);
     }
 
-    public void authorizeRequest(ClockAudit clockAudit){
+    public void authorizeRequest(Long id, String authUsername){
+        ClockAudit clockAudit = getClockAuditById(id);
         clockAudit.setAccepted(true);
         clockAudit.setRejected(false);
+        clockAudit.setAuthUserName(authUsername);
+        clockAudit.setAuthorizationDate(LocalDate.now());
         clockAuditRepository.save(clockAudit);
+        clockService.updateTime(
+                clockAudit.getClock().getClockId(),
+                clockAudit.getStartTime(),
+                clockAudit.getEndTime()
+        );
     }
 
     public void denyRequest(ClockAudit clockAudit){
@@ -52,6 +64,19 @@ public class ClockAuditService {
 
     public void deleteClockAudit(Long id){
         clockAuditRepository.deleteById(id);
+    }
+
+    public void submitRequest(Long clockId, LocalTime startTime, LocalTime endTime){
+        Clock clock = clockService.getClock(clockId);
+        ClockAudit clockAudit = new ClockAudit();
+        clockAudit.setClock(clock);
+        clockAudit.setSubmitDate(LocalDate.now());
+        clockAudit.setStartTime(startTime);
+        clockAudit.setEndTime(endTime);
+        clockAudit.setRejected(false);
+        clockAudit.setAccepted(false);
+        addClockAudit(clockAudit);
+        clockService.setUnderReview(clockId,true);
     }
 
 

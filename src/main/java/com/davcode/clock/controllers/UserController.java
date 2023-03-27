@@ -64,10 +64,10 @@ public class UserController {
         userService.updatePassword(userId, password);
     }
 
-    @PostMapping(path = "/add-ue")
+    /*@PostMapping(path = "/add-ue")
     public void addUserAndEmployee(@RequestBody RequestJson request) {
         userService.addUserAndEmployee(request);
-    }
+    }*/
 
     @DeleteMapping(path = "/{userId}")
     public void deleteUser(@PathVariable Long id) {

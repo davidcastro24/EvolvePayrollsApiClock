@@ -21,22 +21,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService{
 
     private UserRepository userRepository;
-    private RequestMapper requestMapper;
-    private CompanyService companyService;
-    private EmployeeService employeeService;
-    private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RequestMapper requestMapper, CompanyService companyService, EmployeeService employeeService, UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository,BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.requestMapper = requestMapper;
-        this.companyService = companyService;
-        this.employeeService = employeeService;
-        this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -46,15 +38,17 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void addUserAndEmployee(RequestJson requestJson){
+    /*public void addUserAndEmployee(RequestJson requestJson){
         RequestDTO requestDTO = requestMapper.toRequestDto(requestJson);
         User user = requestDTO.getUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Employee employee = requestDTO.getEmployee();
+
         employeeService.addEmployee(employee);
         user.setEmployee(employee);
+        user.setAutoScheduleAllowed(employee.getCompany().isAllowAutoSchedule());
         addUser(user);
-    }
+    }*/
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
@@ -101,8 +95,6 @@ public class UserService {
         user.setActive(false);
         user.setStatus(UserStatus.I.getValue());
         user.setSuspensionDate(LocalDate.now());
-
-
     }
 
     public void updatePassword(Long id, String password){
@@ -143,6 +135,14 @@ public class UserService {
                 DtoMapper.employeeToDto(user.get().getEmployee())
         );
 
+    }
+
+    public List<User> getUsersFromCompany(Long companyId){
+        return userRepository.findAllByEmployee_Company_Id(companyId);
+    }
+
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 
 }

@@ -54,4 +54,23 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class CompanyNotFoundException extends Exceptions{
+
+        public CompanyNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    public static class ConflictedScheduleException extends Exceptions {
+        public ConflictedScheduleException(String message) {
+            super(message);
+        }
+    }
+
+    public static class StartTimeIsAfterEndTimeException extends Exceptions {
+        public StartTimeIsAfterEndTimeException(String message) {
+            super(message);
+        }
+    }
+
 }
