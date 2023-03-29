@@ -3,11 +3,12 @@ package com.davcode.clock.services;
 import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.models.Schedule;
 import com.davcode.clock.repositories.ScheduleRepository;
+import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
