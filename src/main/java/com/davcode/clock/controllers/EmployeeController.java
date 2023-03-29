@@ -1,5 +1,6 @@
 package com.davcode.clock.controllers;
 
+import com.davcode.clock.mappers.dto.EmployeeResponse;
 import com.davcode.clock.mappers.json.EmployeeJson;
 import com.davcode.clock.models.Employee;
 import com.davcode.clock.services.EmployeeService;
@@ -25,8 +26,13 @@ public class EmployeeController {
         employeeService.addEmployee(employee);
     }
 
-    @GetMapping(path = "/getAll")
+    @GetMapping(path = "/gets")
     public List<Employee> getAll(){
         return Collections.emptyList();
+    }
+
+    @GetMapping(path = "/getAll/{companyId}")
+    public List<EmployeeResponse> getAllFromCompany(@PathVariable Long companyId){
+        return employeeService.getAllEmployeesFromCompany(companyId);
     }
 }

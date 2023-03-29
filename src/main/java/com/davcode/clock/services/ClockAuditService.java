@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClockAuditService {
@@ -56,10 +57,13 @@ public class ClockAuditService {
         );
     }
 
-    public void denyRequest(ClockAudit clockAudit){
+    public void denyRequest(Long id, String authUsername){
+        ClockAudit clockAudit = getClockAuditById(id);
+        clockAudit.setAuthUserName(authUsername);
         clockAudit.setRejected(true);
         clockAudit.setAccepted(false);
         clockAuditRepository.save(clockAudit);
+        clockService.updateUnderReview(clockAudit.getClock().getClockId(),false);
     }
 
     public void deleteClockAudit(Long id){
@@ -77,6 +81,12 @@ public class ClockAuditService {
         clockAudit.setAccepted(false);
         addClockAudit(clockAudit);
         clockService.setUnderReview(clockId,true);
+    }
+
+    public List<ClockAudit> getAllByCompany(Long companyId){
+        return clockAuditRepository.findAllByCompanyId(companyId).stream().filter(
+                c -> !c.isAccepted() && !c.isRejected()
+        ).collect(Collectors.toList());
     }
 
 

@@ -30,4 +30,5 @@ public class RequestJsonService {
         user.setAutoScheduleAllowed(employee.getCompany().isAllowAutoSchedule());
         userService.addUser(user);
     }
+
 }
