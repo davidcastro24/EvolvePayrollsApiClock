@@ -4,7 +4,6 @@ import com.davcode.clock.exceptions.Exceptions;
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
 import com.davcode.clock.models.Clock;
-import com.davcode.clock.models.ClockAudit;
 import com.davcode.clock.models.User;
 import com.davcode.clock.repositories.ClockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +87,7 @@ public class ClockService {
 
     public List<Clock> getAllActiveClocksFromCompany(Long companyId){
         List<User> users = userService.getUsersFromCompany(companyId);
-        return clockRepository.findByUserIdAndActiveFlag(
+        return clockRepository.findByUserIdInAndActiveFlag(
                 users.stream().map(User::getId).collect(Collectors.toList()),
                 true
         );
@@ -121,6 +120,12 @@ public class ClockService {
         clock.setStartTime(startTime);
         clock.setEndTime(endTime);
         clock.setUnderReview(false);
+        clockRepository.save(clock);
+    }
+
+    public void updateUnderReview(Long clockId, boolean status){
+        Clock clock = getClock(clockId);
+        clock.setUnderReview(status);
         clockRepository.save(clock);
     }
 

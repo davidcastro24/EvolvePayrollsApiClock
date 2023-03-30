@@ -26,6 +26,7 @@ public class ClockAudit {
     private LocalDate submitDate;
     private LocalDate authorizationDate;
     private String authUserName;
+    private Long companyId;
     @OneToOne
     @JoinColumn(name = "audit_clock_id")
     private Clock clock;

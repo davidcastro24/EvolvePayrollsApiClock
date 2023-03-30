@@ -2,6 +2,7 @@ package com.davcode.clock.controllers;
 
 import com.davcode.clock.mappers.dto.ClockResponse;
 import com.davcode.clock.mappers.dto.DtoMapper;
+import com.davcode.clock.models.Clock;
 import com.davcode.clock.services.ClockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ClockController {
 
     @PostMapping(path = "/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addClock(@PathVariable Long userId){
+    public void checkIn(@PathVariable Long userId){
             clockService.addClock(userId);
     }
 
@@ -34,6 +35,16 @@ public class ClockController {
     @GetMapping(path = "/user/{userId}")
     public List<ClockResponse> getClocksByUser(@PathVariable Long userId){
         return clockService.getAllByUserId(userId);
+    }
+
+    @PutMapping(path = "/checkout")
+    public void checkOut(@RequestBody Clock clock){
+        clockService.checkOut(clock);
+    }
+
+    @GetMapping(path = "/get-active/{userId}")
+    public ClockResponse getClockByUser(@PathVariable Long userId){
+        return clockService.getCurrentClock(userId);
     }
 
 
