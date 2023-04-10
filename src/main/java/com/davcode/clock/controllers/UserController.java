@@ -45,8 +45,8 @@ public class UserController {
     }
 
     @PutMapping(path = "/confirm-email/{userId}")
-    public void updateEmailConfirmation(@PathVariable Long userId) {
-        userService.updateEmailConfirmation(userId);
+    public void updateEmailConfirmation(@PathVariable Long userId, @RequestBody boolean emailConfirmation) {
+        userService.updateEmailConfirmation(userId,emailConfirmation);
     }
 
     @PutMapping(path = "/active/{userId}")

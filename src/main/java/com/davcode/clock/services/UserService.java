@@ -74,12 +74,12 @@ public class UserService{
         }
     }
 
-    public void updateEmailConfirmation(Long id){
+    public void updateEmailConfirmation(Long id, boolean emailVerification){
         Optional<User> userInDB = userRepository.findById(id);
         if (userInDB.isPresent())
             throw new Exceptions.UserNotFoundException("No user with id " + id);
         User user = userInDB.get();
-        user.setEmailVerified(true);
+        user.setEmailVerified(emailVerification);
         userRepository.save(user);
     }
 

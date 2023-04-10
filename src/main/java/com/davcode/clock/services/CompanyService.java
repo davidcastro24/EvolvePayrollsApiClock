@@ -80,6 +80,9 @@ public class CompanyService{
             user.setEmailConfirmationRequired(emailConfirmation);
             userService.updateUser(user);
         });
+        Company comp = company.get();
+        comp.setEmailVerificationRequired(emailConfirmation);
+        companyRepository.save(comp);
     }
 
     public void setAutoScheduleAllowed(Long id,boolean autoScheduleAllowed){
@@ -91,6 +94,9 @@ public class CompanyService{
             user.setAutoScheduleAllowed(autoScheduleAllowed);
             userService.updateUser(user);
         });
+        Company comp = company.get();
+        comp.setAllowAutoSchedule(autoScheduleAllowed);
+        companyRepository.save(comp);
     }
 
 }

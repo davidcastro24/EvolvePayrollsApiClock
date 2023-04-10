@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class Clock {
     @Id
     @GeneratedValue

@@ -123,12 +123,6 @@ public class ClockService {
         clockRepository.save(clock);
     }
 
-    public void updateUnderReview(Long clockId, boolean status){
-        Clock clock = getClock(clockId);
-        clock.setUnderReview(status);
-        clockRepository.save(clock);
-    }
-
     public void setUnderReview(Long clockId, boolean underReview){
         Clock clock = getClock(clockId);
         clock.setUnderReview(underReview);

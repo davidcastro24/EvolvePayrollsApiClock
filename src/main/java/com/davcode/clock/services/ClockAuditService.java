@@ -63,7 +63,7 @@ public class ClockAuditService {
         clockAudit.setRejected(true);
         clockAudit.setAccepted(false);
         clockAuditRepository.save(clockAudit);
-        clockService.updateUnderReview(clockAudit.getClock().getClockId(),false);
+        clockService.setUnderReview(clockAudit.getClock().getClockId(),false);
     }
 
     public void deleteClockAudit(Long id){
