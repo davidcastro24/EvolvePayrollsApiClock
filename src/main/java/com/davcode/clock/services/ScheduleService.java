@@ -28,8 +28,7 @@ public class ScheduleService {
     }
 
     public Optional<Schedule> getConflictedSchedule(Schedule schedule){
-        return scheduleRepository
-                .findAll()
+        return getAllFromCompany(schedule.getCompany().getId())
                 .stream()
                 .filter(s -> isConflictedSchedule(s,schedule))
                 .findFirst();
@@ -41,7 +40,7 @@ public class ScheduleService {
             return true;
         if (fromList.getEndTime().isAfter(schedule.getEndTime()) && fromList.getStartTime().isBefore(schedule.getEndTime()))
             return true;
-        if (fromList.getStartTime().equals(schedule.getStartTime()) || fromList.getEndTime().equals(schedule.getEndTime()))
+        if (fromList.getStartTime().equals(schedule.getStartTime()) && fromList.getEndTime().equals(schedule.getEndTime()))
             return true;
         return false;
     }

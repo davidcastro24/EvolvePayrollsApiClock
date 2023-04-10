@@ -31,8 +31,8 @@ public class EmployeeService {
                 employee,
                 companyService.getById(employeeJson.getCompanyId()));
         if (employee.getHourlySalary() <= 0)
-            employee.setHourlySalary(calculateHourlySalary(employee));
-        if (employee.getAssignedStartTime().isBefore(employee.getAssignedEndTime()))
+            employee.setHourlySalary((long)calculateHourlySalary(employee));
+        if (employee.getAssignedStartTime().isAfter(employee.getAssignedEndTime()))
             throw new Exceptions.StartTimeIsAfterEndTimeException("Error in times");
         employeeRepository.save(employee);
     }
@@ -60,9 +60,9 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
-    public Long calculateHourlySalary(Employee employee){
-        long workingHours = employee.getAssignedStartTime().until(employee.getAssignedEndTime(), ChronoUnit.HOURS);
-        workingHours *= 5; //5 days of week
+    public double calculateHourlySalary(Employee employee){
+        long workingHoursEmp = employee.getAssignedStartTime().until(employee.getAssignedEndTime(), ChronoUnit.HOURS);
+        double workingHours = workingHoursEmp * 5; //5 days of week
         workingHours *= 4; // 4 weeks a month
         return employee.getMonthlySalary()/workingHours;
     }

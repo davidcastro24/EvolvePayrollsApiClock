@@ -23,6 +23,8 @@ public class DtoMapper {
         employee.setAssignedStartTime(employeeJson.getAssignedStartTime());
         employee.setAssignedEndTime(employeeJson.getAssignedEndTime());
         employee.setGroupId(employeeJson.getGroupId());
+        employee.setHourlySalary(employeeJson.getHourlySalary());
+        employee.setMonthlySalary(employeeJson.getMonthlySalary());
         //employee.setCompany(employeeJson.getCompanyId());
         return employee;
     }
