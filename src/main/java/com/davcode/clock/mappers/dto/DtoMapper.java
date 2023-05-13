@@ -12,7 +12,7 @@ import com.davcode.clock.utils.Utils;
 public class DtoMapper {
 
     public static Employee employeeJsonToObj(EmployeeJson employeeJson){
-        Employee employee = new Employee();
+        /*Employee employee = new Employee();
         employee.setId(employeeJson.getEmployeeId());
         employee.setFirstName(employeeJson.getFirstName());
         employee.setLastName(employeeJson.getLastName());
@@ -20,13 +20,28 @@ public class DtoMapper {
         employee.setEmail(employeeJson.getEmail());
         employee.setPositionId(employeeJson.getPositionId());
         employee.setOrganizationId(employeeJson.getOrganizationId());
-        employee.setAssignedStartTime(employeeJson.getAssignedStartTime());
-        employee.setAssignedEndTime(employeeJson.getAssignedEndTime());
+        employee.setAssignedStartTime(Utils.ltparse(employeeJson.getAssignedStartTime()));
+        employee.setAssignedEndTime(Utils.ltparse(employeeJson.getAssignedEndTime()));
         employee.setGroupId(employeeJson.getGroupId());
         employee.setHourlySalary(employeeJson.getHourlySalary());
-        employee.setMonthlySalary(employeeJson.getMonthlySalary());
+        employee.setMonthlySalary(employeeJson.getMonthlySalary());*/
+
+         return Employee.builder()
+                .id(employeeJson.getEmployeeId())
+                .firstName(employeeJson.getFirstName())
+                .lastName(employeeJson.getLastName())
+                .internalEmployeeId(employeeJson.getInternalEmployeeId())
+                .email(employeeJson.getEmail())
+                .positionId(employeeJson.getPositionId())
+                .organizationId(employeeJson.getOrganizationId())
+                .assignedStartTime(Utils.ltparse(employeeJson.getAssignedStartTime()))
+                .assignedEndTime(Utils.ltparse(employeeJson.getAssignedEndTime()))
+                .groupId(employeeJson.getGroupId())
+                .hourlySalary(employeeJson.getHourlySalary())
+                .monthlySalary(employeeJson.getMonthlySalary())
+                .build();
         //employee.setCompany(employeeJson.getCompanyId());
-        return employee;
+        //return employee;
     }
 
     public static Employee addCompanyToExistingEmployee(Employee employee, Company company){
@@ -35,7 +50,7 @@ public class DtoMapper {
     }
 
     public static EmployeeResponse employeeToDto(Employee employee){
-        EmployeeResponse employeeResponse = new EmployeeResponse();
+        /*EmployeeResponse employeeResponse = new EmployeeResponse();
         employeeResponse.setId(employee.getId());
         employeeResponse.setEmail(employee.getEmail());
         employeeResponse.setInternalId(employee.getInternalEmployeeId());
@@ -44,13 +59,24 @@ public class DtoMapper {
         employeeResponse.setCompanyName(employee.getCompany().getCompanyName());
         employeeResponse.setMonthlySalary(employee.getMonthlySalary());
         employeeResponse.setHourlySalary(employee.getHourlySalary());
-        employeeResponse.setContractType(employee.getContractType());
+        employeeResponse.setContractType(employee.getContractType());*/
 
-        return employeeResponse;
+        return EmployeeResponse.builder()
+                .id(employee.getId())
+                .email(employee.getEmail())
+                .internalId(employee.getInternalEmployeeId())
+                .name(employee.getFirstName() + " " + employee.getLastName())
+                .companyId(employee.getCompany().getId())
+                .companyName(employee.getCompany().getCompanyName())
+                .monthlySalary(employee.getMonthlySalary())
+                .hourlySalary(employee.getHourlySalary())
+                .contractType(employee.getContractType())
+                .build();
+
     }
 
     public static UserResponse UserToDto(User user){
-        UserResponse userResponse = new UserResponse();
+        /*UserResponse userResponse = new UserResponse();
         userResponse.setUserName(user.getUserName());
         userResponse.setId(user.getId());
         userResponse.setRoles(user.getRoles());
@@ -65,7 +91,22 @@ public class DtoMapper {
         userResponse.setCredentialsExpired(user.isCredentialsExpired());
         if (user.getEmployee() != null)
             userResponse.setEmployeeId(user.getEmployee().getId());
-        return userResponse;
+        return userResponse;*/
+        return UserResponse.builder()
+                .userName(user.getUserName())
+                .id(user.getId())
+                .roles(user.getRoles())
+                .isActive(user.isActive())
+                .creationDate(user.getCreationDate())
+                .changePasswordOnNextLogin(user.isChangePasswordOnNextLogin())
+                .suspensionDate(user.getSuspensionDate())
+                .emailVerified(user.isEmailVerified())
+                .status(user.getStatus())
+                .autoScheduleAllowed(user.isAutoScheduleAllowed())
+                .lastLogin(user.getLastLogin())
+                .credentialsExpired(user.isCredentialsExpired())
+                .employeeId(user.getEmployee().getId() > 0 ? user.getEmployee().getId() : 0)
+                .build();
     }
 
     public static CompanyResponse CompanyToDto(Company company){
@@ -78,7 +119,7 @@ public class DtoMapper {
 
     public static ClockResponse clockToDto(Clock clock){
         ClockResponse clockResponse = new ClockResponse();
-        clockResponse.setClockId(clock.getClockId());
+        clockResponse.setClockId(clock.getId());
         clockResponse.setActiveDate(clock.getActiveDate());
         clockResponse.setActiveFlag(clock.isActiveFlag());
         clockResponse.setEndTime(clock.getEndTime());
@@ -104,12 +145,12 @@ public class DtoMapper {
     }
 
     public static EmployeeJson ReqJsonToEmployeeJson(RequestJson requestJson){
-        EmployeeJson employeeJson = new EmployeeJson();
+        /*EmployeeJson employeeJson = new EmployeeJson();
         employeeJson.setEmployeeId(requestJson.getEmployeeId());
         employeeJson.setInternalEmployeeId(requestJson.getInternalEmployeeId());
         employeeJson.setEmail(requestJson.getEmail());
-        employeeJson.setAssignedEndTime(Utils.ltparse(requestJson.getAssignedStartTime()));
-        employeeJson.setAssignedEndTime(Utils.ltparse(requestJson.getAssignedEndTime()));
+        employeeJson.setAssignedEndTime(requestJson.getAssignedStartTime());
+        employeeJson.setAssignedEndTime(requestJson.getAssignedEndTime());
         employeeJson.setFirstName(requestJson.getFirstName());
         employeeJson.setLastName(requestJson.getLastName());
         employeeJson.setGroupId(requestJson.getGroupId());
@@ -119,7 +160,22 @@ public class DtoMapper {
         employeeJson.setMonthlySalary(requestJson.getMonthlySalary());
         employeeJson.setHourlySalary(requestJson.getHourlySalary());
         employeeJson.setContractType(requestJson.getContractType());
-        return employeeJson;
+        return employeeJson;*/
+        return EmployeeJson.builder()
+                .employeeId(requestJson.getEmployeeId())
+                .internalEmployeeId(requestJson.getInternalEmployeeId())
+                .email(requestJson.getEmail())
+                .assignedStartTime(requestJson.getAssignedStartTime())
+                .assignedEndTime(requestJson.getAssignedEndTime())
+                .firstName(requestJson.getFirstName())
+                .lastName(requestJson.getLastName())
+                .groupId(requestJson.getGroupId())
+                .organizationId(requestJson.getOrganizationId())
+                .companyId(requestJson.getCompanyId())
+                .monthlySalary(requestJson.getMonthlySalary())
+                .hourlySalary(requestJson.getHourlySalary())
+                .contractType(requestJson.getContractType())
+                .build();
     }
 
 }

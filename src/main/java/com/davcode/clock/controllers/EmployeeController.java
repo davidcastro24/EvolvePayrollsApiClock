@@ -26,13 +26,13 @@ public class EmployeeController {
         employeeService.addEmployee(employee);
     }
 
-    @GetMapping(path = "/gets")
-    public List<Employee> getAll(){
-        return Collections.emptyList();
-    }
-
     @GetMapping(path = "/getAll/{companyId}")
     public List<EmployeeResponse> getAllFromCompany(@PathVariable Long companyId){
         return employeeService.getAllEmployeesFromCompany(companyId);
+    }
+
+    @GetMapping(path = "/{employeeId}")
+    public EmployeeResponse getEmployee(@PathVariable Long employeeId){
+        return employeeService.getEmployee(employeeId);
     }
 }

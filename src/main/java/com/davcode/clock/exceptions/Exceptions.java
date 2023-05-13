@@ -73,4 +73,9 @@ public class Exceptions extends RuntimeException{
         }
     }
 
+    public static class ActiveBreakAlreadyExists extends Exceptions {
+        public ActiveBreakAlreadyExists(String message) {
+            super(message);
+        }
+    }
 }

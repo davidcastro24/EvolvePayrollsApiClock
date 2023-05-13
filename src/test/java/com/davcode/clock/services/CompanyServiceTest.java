@@ -182,7 +182,7 @@ public class CompanyServiceTest {
 
 
 
-    private static Company createTestCompany(){
+    public static Company createTestCompany(){
         Company comp = new Company();
         comp.setId(companyCnt);
         comp.setTimeZone(TimeZone.getDefault());

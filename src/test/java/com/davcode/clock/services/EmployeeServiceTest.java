@@ -84,7 +84,7 @@ public class EmployeeServiceTest {
         Employee updated = employee;
         updated.setFirstName("TestUpdate");
 
-        employeeService.updateEmployee(updated);
+        employeeService.updateEmployee(1L,updated);
 
         verify(employeeRepository,times(1)).save(any(Employee.class));
     }
@@ -111,7 +111,6 @@ public class EmployeeServiceTest {
     @Test
     public void testCalculateHourlySalary(){
         Double result = employeeService.calculateHourlySalary(employee);
-        System.out.println(result);
         assertEquals(62.5,result);
     }
 
@@ -125,6 +124,7 @@ public class EmployeeServiceTest {
         employee.setCompany(company);
         employee.setHourlySalary(500L);
         employee.setMonthlySalary(5000L);
+        employee.setEmail("email@email.com");
         empCnt++;
         return employee;
     }
@@ -138,17 +138,18 @@ public class EmployeeServiceTest {
         return company;
     }
 
-    private static EmployeeJson createEmployeeJson(){
-        EmployeeJson employeeJson = new EmployeeJson();
-        employeeJson.setEmployeeId(1L);
-        employeeJson.setFirstName("Test");
-        employeeJson.setLastName("Test");
-        employeeJson.setAssignedStartTime(LocalTime.parse("08:00"));
-        employeeJson.setAssignedEndTime(LocalTime.NOON);
-        employeeJson.setCompanyId(1L);
-        employeeJson.setHourlySalary(500L);
-        employeeJson.setMonthlySalary(5000L);
-        return employeeJson;
+    private static EmployeeJson createEmployeeJson() {
+        return EmployeeJson.builder()
+                .employeeId(1L)
+                .firstName("Test")
+                .lastName("Test")
+                .assignedStartTime("08:00")
+                .assignedEndTime("12:00")
+                .companyId(1L)
+                .hourlySalary(500L)
+                .monthlySalary(5000L)
+                .email("Email@Email.Com")
+                .build();
     }
 
 }

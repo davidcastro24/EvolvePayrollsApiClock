@@ -1,10 +1,15 @@
 package com.davcode.clock.mappers.json;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalTime;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class EmployeeJson {
     private Long employeeId;
     private String firstName;
@@ -14,8 +19,8 @@ public class EmployeeJson {
     private Integer organizationId;
     private Integer groupId;
     private Integer positionId;
-    private LocalTime assignedStartTime;
-    private LocalTime assignedEndTime;
+    private String assignedStartTime;
+    private String assignedEndTime;
     private Long companyId;
     private Long monthlySalary;
     private Long hourlySalary;

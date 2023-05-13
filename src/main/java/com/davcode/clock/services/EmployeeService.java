@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,8 +46,22 @@ public class EmployeeService {
         return DtoMapper.employeeToDto(employeeRepository.findById(id).get());
     }
 
-    public void updateEmployee(Employee employee){
-        employeeRepository.save(employee);
+    public void updateEmployee(Long id, Employee employee){
+        employeeRepository.findById(id).ifPresent(emp ->{
+            employeeRepository.save(
+                emp.toBuilder()
+                    .internalEmployeeId(employee.getInternalEmployeeId())
+                    .organizationId(employee.getOrganizationId())
+                    .groupId(employee.getGroupId())
+                    .positionId(employee.getPositionId())
+                    .assignedStartTime(employee.getAssignedStartTime())
+                    .assignedEndTime(employee.getAssignedEndTime())
+                    .monthlySalary(employee.getMonthlySalary())
+                    .hourlySalary(employee.getHourlySalary())
+                    .contractType(employee.getContractType())
+                    .build()
+            );
+        } );
     }
 
     public void deleteEmployee(Long id){
