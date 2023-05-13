@@ -206,7 +206,7 @@ public class ClockServiceTest {
 
     public Clock createClock(User user, boolean active){
         Clock clock = new Clock();
-        clock.setClockId(1L);
+        clock.setId(1L);
         clock.setStartTime(LocalTime.parse("08:00"));
         clock.setEndTime(LocalTime.NOON);
         clock.setActiveFlag(active);

@@ -12,7 +12,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "api/vi/clock-audit")
 public class ClockAuditController {
-    private final ClockAuditService clockAuditService;
+
+    private ClockAuditService clockAuditService;
 
     @Autowired
     public ClockAuditController(ClockAuditService clockAuditService) {

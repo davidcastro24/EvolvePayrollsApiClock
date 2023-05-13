@@ -8,23 +8,20 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
-public class Schedule {
+@RequiredArgsConstructor
+public class Break {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    @NonNull
     private LocalTime startTime;
-    @NonNull
     private LocalTime endTime;
     @NonNull
-    private double rate;
-    @NonNull
-    private boolean isOvertime;
+    private boolean active;
+
     @NonNull
     @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
+    @JoinColumn(name = "clock_clock_id")
+    private Clock clock;
 }

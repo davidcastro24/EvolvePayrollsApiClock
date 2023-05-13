@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class ClockAuditService {
 
-    private final ClockAuditRepository clockAuditRepository;
-    private final ClockService clockService;
+    private ClockAuditRepository clockAuditRepository;
+    private ClockService clockService;
 
     @Autowired
     public ClockAuditService(ClockAuditRepository clockAuditRepository, ClockService clockService) {
@@ -51,7 +51,7 @@ public class ClockAuditService {
         clockAudit.setAuthorizationDate(LocalDate.now());
         clockAuditRepository.save(clockAudit);
         clockService.updateTime(
-                clockAudit.getClock().getClockId(),
+                clockAudit.getClock().getId(),
                 clockAudit.getStartTime(),
                 clockAudit.getEndTime()
         );
@@ -63,7 +63,7 @@ public class ClockAuditService {
         clockAudit.setRejected(true);
         clockAudit.setAccepted(false);
         clockAuditRepository.save(clockAudit);
-        clockService.setUnderReview(clockAudit.getClock().getClockId(),false);
+        clockService.setUnderReview(clockAudit.getClock().getId(),false);
     }
 
     public void deleteClockAudit(Long id){

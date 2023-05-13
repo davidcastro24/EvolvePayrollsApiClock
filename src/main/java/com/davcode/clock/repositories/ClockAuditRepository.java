@@ -1,5 +1,6 @@
 package com.davcode.clock.repositories;
 
+
 import com.davcode.clock.models.ClockAudit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

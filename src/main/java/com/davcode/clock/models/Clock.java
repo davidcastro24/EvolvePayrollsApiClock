@@ -2,7 +2,7 @@ package com.davcode.clock.models;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,12 +11,11 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@ToString
 public class Clock {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    private Long clockId;
+    private Long id;
 
     @NonNull
     private LocalDate activeDate;

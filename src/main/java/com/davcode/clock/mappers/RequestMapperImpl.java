@@ -46,7 +46,8 @@ public class RequestMapperImpl implements RequestMapper{
 
     @Override
     public Employee toEmployee(EmployeeJson employeej) {
-        Employee employee = new Employee();
+        return DtoMapper.employeeJsonToObj(employeej);
+        /*Employee employee = new Employee();
         employee.setInternalEmployeeId(employeej.getInternalEmployeeId());
         employee.setEmail(employeej.getEmail());
         employee.setPositionId(employeej.getPositionId());
@@ -56,6 +57,6 @@ public class RequestMapperImpl implements RequestMapper{
         employee.setAssignedEndTime(employeej.getAssignedEndTime());
         if (employeej.getCompanyId() > 0)
             employee.setCompany(companyService.getById(employeej.getCompanyId()));
-        return employee;
+        return employee;*/
     }
 }
