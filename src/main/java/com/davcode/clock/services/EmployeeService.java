@@ -26,11 +26,11 @@ public class EmployeeService {
         this.companyService = companyService;
     }
 
-    public void addEmployee(EmployeeJson employeeJson){
+    public void addEmployee(Long companyId, EmployeeJson employeeJson){
         Employee employee = DtoMapper.employeeJsonToObj(employeeJson);
         employee = DtoMapper.addCompanyToExistingEmployee(
                 employee,
-                companyService.getById(employeeJson.getCompanyId()));
+                companyService.getById(companyId));
         if (employee.getHourlySalary() <= 0)
             employee.setHourlySalary((long)calculateHourlySalary(employee));
         if (employee.getAssignedStartTime().isAfter(employee.getAssignedEndTime()))
@@ -42,17 +42,28 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public EmployeeResponse getEmployee(Long id){
-        return DtoMapper.employeeToDto(employeeRepository.findById(id).get());
+    public EmployeeResponse getEmployee(Long companyId,Long id){
+        Optional<Employee> emp = employeeRepository.findById(id);
+        if (emp.isPresent()){
+            Employee employee = emp.get();
+            if (employee.getCompany().getId().equals(companyId))
+                return DtoMapper.employeeToDto(employee);
+        }
+        throw new Exceptions.EmployeeNotFoundException("No employee found in company");
     }
 
-    public void updateEmployee(Long id, Employee employee){
+    public void updateEmployee(Long companyId, Long id, EmployeeJson employeeJson){
         employeeRepository.findById(id).ifPresent(emp ->{
+            if (!emp.getCompany().getId().equals(companyId))
+                throw new Exceptions.EmployeeNotFoundException("No employee in company with id " + id);
+
+            Employee employee = DtoMapper.employeeJsonToObj(employeeJson);
             employeeRepository.save(
                 emp.toBuilder()
                     .internalEmployeeId(employee.getInternalEmployeeId())
                     .organizationId(employee.getOrganizationId())
                     .groupId(employee.getGroupId())
+                    .email(employee.getEmail())
                     .positionId(employee.getPositionId())
                     .assignedStartTime(employee.getAssignedStartTime())
                     .assignedEndTime(employee.getAssignedEndTime())
@@ -64,15 +75,26 @@ public class EmployeeService {
         } );
     }
 
-    public void deleteEmployee(Long id){
-        employeeRepository.deleteById(id);
+    public void deleteEmployee(Long companyId, Long id){
+        if (getEmployee(companyId,id) != null)
+            employeeRepository.deleteById(id);
     }
 
     public List<EmployeeResponse> getAllEmployeesFromCompany(Long companyId){
-        return employeeRepository.findAllByCompany_Id(companyId)
+        List<EmployeeResponse> employeeList = employeeRepository.findAllByCompany_Id(companyId)
                 .stream()
                 .map(e -> DtoMapper.employeeToDto(e))
                 .collect(Collectors.toList());
+        if (employeeList.isEmpty())
+            throw new Exceptions.NoEmployeesInCompany("No employees found in company with id " + companyId);
+        return employeeList;
+    }
+
+    public EmployeeResponse getByInternalEmployeeId(Long companyId, Long id){
+        Employee employee = employeeRepository.findByInternalEmployeeId(id);
+        if (employee.getCompany().getId().equals(companyId))
+            return DtoMapper.employeeToDto(employee);
+        throw new Exceptions.EmployeeNotFoundException("No employee found in company with internal id " + id);
     }
 
     public double calculateHourlySalary(Employee employee){

@@ -77,7 +77,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void testGetEmployee() throws Exception {
-        when(employeeService.getEmployee(1L)).thenReturn(employeeResponses.get(0));
+        when(employeeService.getEmployee(1L,1L)).thenReturn(employeeResponses.get(0));
         mockMvc.perform(
                         get("/api/v1/employee/1")
                                 .accept(MediaType.APPLICATION_JSON)
@@ -85,7 +85,7 @@ public class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(employeeResponses.get(0).getName())));
 
-        verify(employeeService, times(1)).getEmployee(anyLong());
+        verify(employeeService, times(1)).getEmployee(anyLong(),anyLong());
     }
 
     private EmployeeJson createEmployeeJson() {

@@ -78,4 +78,10 @@ public class Exceptions extends RuntimeException{
             super(message);
         }
     }
+    public static class NoEmployeesInCompany extends Exceptions {
+        public NoEmployeesInCompany(String message) {
+            super(message);
+        }
+    }
+
 }

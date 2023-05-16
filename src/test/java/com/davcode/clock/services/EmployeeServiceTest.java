@@ -57,7 +57,7 @@ public class EmployeeServiceTest {
     public void testAddEmployee(){
         when(companyService.getById(1L)).thenReturn(company);
 
-        employeeService.addEmployee(employeeJson);
+        employeeService.addEmployee(1L,employeeJson);
 
         verify(companyService,times(1)).getById(1L);
         verify(employeeRepository,times(1)).save(any(Employee.class));
@@ -74,24 +74,24 @@ public class EmployeeServiceTest {
     public void testGetEmployee(){
         when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
 
-        employeeService.getEmployee(1L);
+        employeeService.getEmployee(1L,1L);
 
         verify(employeeRepository,times(1)).findById(1L);
     }
 
     @Test
     public void testUpdateEmployee(){
-        Employee updated = employee;
+        EmployeeJson updated = employeeJson;
         updated.setFirstName("TestUpdate");
 
-        employeeService.updateEmployee(1L,updated);
+        employeeService.updateEmployee(1L,1L,updated);
 
         verify(employeeRepository,times(1)).save(any(Employee.class));
     }
 
     @Test
     public void testDeleteEmployee(){
-       employeeService.deleteEmployee(1L);
+       employeeService.deleteEmployee(1L,1L);
 
         verify(employeeRepository,times(1)).deleteById(anyLong());
     }

@@ -33,7 +33,8 @@ public class CompanyService{
     }
 
     public Company getById(Long id){
-        return companyRepository.findById(id).get();
+        return companyRepository.findById(id).orElseThrow(() -> new Exceptions.CompanyNotFoundException("Company not found for id: " + id));
+
     }
 
     public void postCompany(Company company){
