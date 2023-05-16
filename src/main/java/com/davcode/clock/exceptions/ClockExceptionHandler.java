@@ -20,6 +20,8 @@ public class ClockExceptionHandler {
         if (exceptions instanceof Exceptions.ClockNotFoundException
         || exceptions instanceof Exceptions.EmployeeNotFoundException
         || exceptions instanceof Exceptions.UserNotFoundException
+        || exceptions instanceof Exceptions.NoEmployeesInCompany
+        || exceptions instanceof Exceptions.CompanyNotFoundException
         || exceptions instanceof Exceptions.NoClocksException){
             return HttpStatus.NOT_FOUND;
         }else if(exceptions instanceof  Exceptions.InvalidDataException){

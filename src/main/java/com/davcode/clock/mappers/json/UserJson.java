@@ -1,16 +1,15 @@
 package com.davcode.clock.mappers.json;
 
-import com.davcode.clock.models.Employee;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class UserJson {
     private Long userId;
     private String userName;

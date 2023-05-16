@@ -25,6 +25,7 @@ public class Employee {
     private String lastName;
     @NonNull
     private String email;
+    @Column(unique = true)
     private Long internalEmployeeId;
     private Integer organizationId;
     private Integer groupId;

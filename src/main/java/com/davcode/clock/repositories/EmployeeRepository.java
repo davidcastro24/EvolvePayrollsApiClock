@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     List<Employee> findAllByCompany_Id(Long companyId);
+    Employee findByInternalEmployeeId(Long internalId);
 }

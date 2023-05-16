@@ -1,11 +1,17 @@
 package com.davcode.clock.mappers.dto;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Data
+@Getter
+@Setter
+@Builder
+
 public class ClockResponse {
     private Long clockId;
     private LocalDate activeDate;
